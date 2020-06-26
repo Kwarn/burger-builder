@@ -5,7 +5,7 @@ import Sidedraw from '../Navigation/Sidedraw/Sidedraw'
 
 class Layout extends Component {
   state = {
-    showSideDraw: true,
+    showSideDraw: false,
   }
 
   sideDrawHandler = () => {
