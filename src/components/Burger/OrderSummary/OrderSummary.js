@@ -3,9 +3,8 @@ import Button from '../../UI/Button/Button'
 
 class OrderSummary extends Component {
   componentDidUpdate() {
-    console.log('ORDERSUMMERY Did Update')
+    console.log('Component did update')
   }
-
   render() {
     const ingredientSummary = Object.keys(this.props.ingredients).map(key => (
       <p key={key}>
