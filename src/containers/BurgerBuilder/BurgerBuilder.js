@@ -19,8 +19,9 @@ class BurgerBuilder extends Component {
     ingredients: null,
     totalPrice: 4.5,
     purchaseable: false,
-    isOrdered: false,
+    isModalOpen: false,
     loading: false,
+    error: false,
   }
 
   componentDidMount() {
@@ -29,11 +30,14 @@ class BurgerBuilder extends Component {
       .then(res => {
         this.setState({ ingredients: res.data })
       })
+      .catch(err => {
+        this.setState({ error: true })
+      })
   }
 
   orderNowHandler = () => {
-    const currentStatus = this.state.isOrdered
-    this.setState({ isOrdered: !currentStatus })
+    const currentStatus = this.state.isModalOpen
+    this.setState({ isModalOpen: !currentStatus })
   }
 
   updatePurchaseState = ingredients => {
@@ -42,30 +46,35 @@ class BurgerBuilder extends Component {
   }
 
   confirmPurchaseHandler = () => {
-    this.setState({ loading: true })
-    const order = {
-      ingredients: this.state.ingredients,
-      // recalc price on server in future
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Karl W',
-        address: {
-          street: 'Fox Lane',
-          postcode: 'N134AP',
-          country: 'UK',
-        },
-        email: 'karlwarner.dev@gmail.com',
-      },
-      deliveryMethod: 'fastest',
-    }
-    axios
-      .post('/orders.json', order)
-      .then(res => {
-        this.setState({ loading: false, isOrdered: false })
-      })
-      .catch(err => {
-        this.setState({ loading: false, isOrdered: false })
-      })
+    // this.setState({ loading: true })
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   // recalc price on server in future
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Karl W',
+    //     address: {
+    //       street: 'Fox Lane',
+    //       postcode: 'N134AP',
+    //       country: 'UK',
+    //     },
+    //     email: 'karlwarner.dev@gmail.com',
+    //   },
+    //   deliveryMethod: 'fastest',
+    // }
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(res => {
+    //     this.setState({ loading: false, isModalOpen: false })
+    //   })
+    //   .catch(err => {
+    //     this.setState({ loading: false, isModalOpen: false })
+    //   })
+    let queryStrings = []
+    for (let key of Object.keys(this.state.ingredients))
+      queryStrings.push(`${key}=${this.state.ingredients[key]}`)
+
+    this.props.history.push(`/checkout/?${queryStrings.join('&')}`)
   }
 
   addIngredientHandler = type => {
@@ -114,7 +123,12 @@ class BurgerBuilder extends Component {
     }
 
     let orderSummary = null
-    let burger = <Spinner></Spinner>
+
+    let burger = this.state.error ? (
+      <p style={{ textAlign: 'center' }}>Error Fetching Ingredients</p>
+    ) : (
+      <Spinner></Spinner>
+    )
 
     if (this.state.ingredients) {
       burger = (
@@ -139,17 +153,17 @@ class BurgerBuilder extends Component {
         />
       )
     }
+
     if (this.state.loading) {
       orderSummary = <Spinner />
     }
 
     return (
       <>
-        <Modal show={this.state.isOrdered} toggle={this.orderNowHandler}>
+        <Modal show={this.state.isModalOpen} toggle={this.orderNowHandler}>
           {orderSummary}
         </Modal>
         {burger}
-        {orderSummary}
       </>
     )
   }
