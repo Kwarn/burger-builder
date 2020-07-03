@@ -5,18 +5,21 @@ import ContactData from './ContactData/ContactData'
 
 class Checkout extends Component {
   state = {
-    ingredients: {},
+    ingredients: null,
+    price: 0,
   }
 
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search)
+    console.log('CHECKOUT- DIDMOUNT')
     const ingredients = {
       salad: +query.get('salad'),
       cheese: +query.get('cheese'),
       bacon: +query.get('bacon'),
       meat: +query.get('meat'),
     }
-    this.setState({ ingredients: ingredients })
+    const price = +query.get('price')
+    this.setState({ ingredients: ingredients, price: price })
   }
 
   checkoutCancelledHandler = () => {
@@ -36,7 +39,13 @@ class Checkout extends Component {
         />
         <Route
           path={this.props.match.path + '/contact-data'}
-          component={ContactData}
+          render={props => (
+            <ContactData
+              ingredients={this.state.ingredients}
+              price={this.state.price}
+              {...props}
+            />
+          )}
         />
       </div>
     )

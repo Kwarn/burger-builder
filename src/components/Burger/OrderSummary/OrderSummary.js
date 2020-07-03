@@ -6,7 +6,7 @@ class OrderSummary extends Component {
   render() {
     const ingredientSummary = Object.keys(this.props.ingredients).map(key => (
       <p key={key}>
-        <span style={{ textTransform: 'capitalize' }}>{key}</span>: $
+        <span style={{ textTransform: 'capitalize' }}>{key}</span>: £
         {this.props.ingredients[key]}
       </p>
     ))
@@ -16,7 +16,7 @@ class OrderSummary extends Component {
         <p>Burger with the following ingredients:</p>
         <ul>{ingredientSummary}</ul>
         <p>Continue to checkout?</p>
-        <h1>Total: ${this.props.totalPrice.toFixed(2)}</h1>
+        <h1>Total: £{this.props.totalPrice.toFixed(2)}</h1>
         <Button btnType="Danger" clicked={this.props.cancelPurchase}>
           Cancel
         </Button>

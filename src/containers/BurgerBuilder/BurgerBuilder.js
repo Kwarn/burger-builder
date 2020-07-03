@@ -16,7 +16,12 @@ const INGREDIENTS_PRICES = {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: null,
+    ingredients: {
+      salad: 0,
+      cheese: 0,
+      bacon: 0,
+      meat: 0,
+    },
     totalPrice: 4.5,
     purchaseable: false,
     isModalOpen: false,
@@ -26,9 +31,16 @@ class BurgerBuilder extends Component {
 
   componentDidMount() {
     axios
-      .get('https://react-burger-builder-679aa.firebaseio.com/ingredients.json')
+      .get('ingredients.json')
       .then(res => {
-        this.setState({ ingredients: res.data })
+        this.setState({
+          ingredients: {
+            salad: res.data.salad,
+            cheese: res.data.cheese,
+            bacon: res.data.bacon,
+            meat: res.data.meat,
+          },
+        })
       })
       .catch(err => {
         this.setState({ error: true })
@@ -46,37 +58,13 @@ class BurgerBuilder extends Component {
   }
 
   confirmPurchaseHandler = () => {
-    // this.setState({ loading: true })
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   // recalc price on server in future
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: 'Karl W',
-    //     address: {
-    //       street: 'Fox Lane',
-    //       postcode: 'N134AP',
-    //       country: 'UK',
-    //     },
-    //     email: 'karlwarner.dev@gmail.com',
-    //   },
-    //   deliveryMethod: 'fastest',
-    // }
-    // axios
-    //   .post('/orders.json', order)
-    //   .then(res => {
-    //     this.setState({ loading: false, isModalOpen: false })
-    //   })
-    //   .catch(err => {
-    //     this.setState({ loading: false, isModalOpen: false })
-    //   })
-
-    console.log('BURGERBUILDER Confirm Purchase Handler')
     let queryParams = []
     for (let key of Object.keys(this.state.ingredients))
       queryParams.push(`${key}=${this.state.ingredients[key]}`)
 
-    this.props.history.push(`/checkout/?${queryParams.join('&')}`)
+    this.props.history.push(
+      `/checkout/?${queryParams.join('&')}&price=${this.state.totalPrice.toFixed(2)}`
+    )
   }
 
   addIngredientHandler = type => {
