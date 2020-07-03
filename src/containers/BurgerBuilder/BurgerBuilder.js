@@ -70,11 +70,13 @@ class BurgerBuilder extends Component {
     //   .catch(err => {
     //     this.setState({ loading: false, isModalOpen: false })
     //   })
-    let queryStrings = []
-    for (let key of Object.keys(this.state.ingredients))
-      queryStrings.push(`${key}=${this.state.ingredients[key]}`)
 
-    this.props.history.push(`/checkout/?${queryStrings.join('&')}`)
+    console.log('BURGERBUILDER Confirm Purchase Handler')
+    let queryParams = []
+    for (let key of Object.keys(this.state.ingredients))
+      queryParams.push(`${key}=${this.state.ingredients[key]}`)
+
+    this.props.history.push(`/checkout/?${queryParams.join('&')}`)
   }
 
   addIngredientHandler = type => {
