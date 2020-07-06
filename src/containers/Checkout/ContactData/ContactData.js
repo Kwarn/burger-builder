@@ -4,8 +4,6 @@ import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import classes from './ContactData.module.css'
-import { elementType } from 'prop-types'
-import input from '../../../components/UI/Input/Input'
 
 class ContactData extends Component {
   state = {
@@ -17,6 +15,10 @@ class ContactData extends Component {
           placeholder: 'Your Name',
         },
         value: '',
+        validation: {
+          required: true,
+          valid: false,
+        },
       },
       street: {
         elementType: 'input',
@@ -25,6 +27,10 @@ class ContactData extends Component {
           placeholder: 'Street',
         },
         value: '',
+        validation: {
+          required: true,
+          valid: false,
+        },
       },
       postcode: {
         elementType: 'input',
@@ -33,6 +39,10 @@ class ContactData extends Component {
           placeholder: 'Postcode',
         },
         value: '',
+        validation: {
+          required: true,
+          valid: false,
+        },
       },
       country: {
         elementType: 'input',
@@ -41,6 +51,10 @@ class ContactData extends Component {
           placeholder: 'Country',
         },
         value: '',
+        validation: {
+          required: true,
+          valid: false,
+        },
       },
       email: {
         elementType: 'input',
@@ -49,6 +63,10 @@ class ContactData extends Component {
           placeholder: 'Email',
         },
         value: '',
+        validation: {
+          required: true,
+          valid: false,
+        },
       },
       deliveryMethod: {
         elementType: 'select',
@@ -64,15 +82,11 @@ class ContactData extends Component {
     isLoading: false,
   }
 
-  /*   createObjectStructure() {
-    const elemData = [
-      ['name', 'input', 'text', 'Your name'],
-      ['street', 'input', 'text', 'Post Code'],
-      ['country', 'input', 'text', 'Country'],
-      ['email', 'input', 'email', 'Your Email'],
-    ]
-    const orderForm = {}
-  } */
+  validateInput = (value, rules) => {
+    let isValid = false
+    if (rules.required) isValid = value.trim() !== ''
+    return isValid
+  }
 
   orderHandler = event => {
     event.preventDefault()
@@ -86,7 +100,7 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      orderData: formData
+      orderData: formData,
     }
     axios
       .post('/orders.json', order)
@@ -106,10 +120,16 @@ class ContactData extends Component {
     const updatedNestedKeys = {
       ...updatedOrderForm[inputIdentifier],
     }
+    const updatedValidation = {
+      ...updatedNestedKeys.validation
+    }
     updatedNestedKeys.value = event.target.value
+    updatedValidation.valid = this.validateInput(updatedNestedKeys.value, updatedNestedKeys.validation)
+    updatedNestedKeys.validation = updatedValidation
     updatedOrderForm[inputIdentifier] = updatedNestedKeys
+    console.log(updatedOrderForm)
 
-    this.setState({orderForm: updatedOrderForm})
+    this.setState({ orderForm: updatedOrderForm })
   }
 
   render() {
@@ -132,9 +152,7 @@ class ContactData extends Component {
             changed={event => this.inputChangedHandler(event, formElement.id)}
           ></Input>
         ))}
-        <Button btnType="Success">
-          ORDER
-        </Button>
+        <Button btnType="Success">ORDER</Button>
       </form>
     )
     if (this.state.isLoading) {
