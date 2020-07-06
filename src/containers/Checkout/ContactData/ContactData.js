@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from '../../../axios-orders'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
+import Input from '../../../components/UI/Input/Input'
 import classes from './ContactData.module.css'
 
 class ContactData extends Component {
@@ -58,34 +59,41 @@ class ContactData extends Component {
   render() {
     let form = (
       <form>
-        <input
+        <Input
+          inputtype="input"
           type="text"
           name="name"
           placeholder="Your Name"
           value={this.state.name}
           onChange={this.nameHandler}
-        ></input>
-        <input
+        ></Input>
+        <Input
+          inputtype="input"
           type="email"
           name="email"
           placeholder="Your Email"
           value={this.state.email}
           onChange={this.emailHandler}
-        ></input>
-        <input
+        ></Input>
+        <Input
+          inputtype="input"
           type="text"
           name="street"
           placeholder="Street"
           value={this.state.street}
           onChange={this.streetHandler}
-        ></input>
-        <input
+        ></Input>
+        <Input
+          inputtype="input"
           type="text"
           name="postcode"
           placeholder="Postcode"
           value={this.state.postcode}
           onChange={this.postcodeHandler}
-        ></input>
+        ></Input>
+        <Button clicked={this.orderHandler} btnType="Success">
+          ORDER
+        </Button>
       </form>
     )
     if (this.state.isLoading) {
@@ -95,9 +103,6 @@ class ContactData extends Component {
       <div className={classes.ContactData}>
         <h4>Enter your Contact Data</h4>
         {form}
-        <Button clicked={this.orderHandler} btnType="Success">
-          ORDER
-        </Button>
       </div>
     )
   }

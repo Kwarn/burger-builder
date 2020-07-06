@@ -1,15 +1,8 @@
 import React from 'react'
-import classes from './Burger.module.css'
 import Ingredient from './Ingredient/Ingredient.js'
+import classes from './Burger.module.css'
 
 const Burger = props => {
-  console.log(props.ingredients)
-  // const ingredients = {
-  //   salad: props.ingredients.salad,
-  //   cheese: props.ingredients.cheese,
-  //   bacon: props.ingredients.bacon,
-  //   meat: props.ingredients.meat,
-  // }
 
   const ingredientElements = []
   for (let key in props.ingredients)

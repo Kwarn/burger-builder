@@ -11,7 +11,6 @@ class Checkout extends Component {
 
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search)
-    console.log('CHECKOUT- DIDMOUNT')
     const ingredients = {
       salad: +query.get('salad'),
       cheese: +query.get('cheese'),
