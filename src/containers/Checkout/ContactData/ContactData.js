@@ -7,6 +7,8 @@ import classes from './ContactData.module.css'
 
 class ContactData extends Component {
   state = {
+    isLoading: false,
+    isFormValid: false,
     orderForm: {
       name: {
         elementType: 'input',
@@ -17,8 +19,9 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
-          valid: false,
         },
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: 'input',
@@ -29,8 +32,9 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
-          valid: false,
         },
+        valid: false,
+        touched: false,
       },
       postcode: {
         elementType: 'input',
@@ -43,8 +47,9 @@ class ContactData extends Component {
           required: true,
           minLength: 5,
           maxLength: 6,
-          valid: false,
         },
+        valid: false,
+        touched: false,
       },
       country: {
         elementType: 'input',
@@ -55,8 +60,9 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
-          valid: false,
         },
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: 'input',
@@ -67,8 +73,9 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
-          valid: false,
         },
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: 'select',
@@ -78,10 +85,11 @@ class ContactData extends Component {
             { value: 'Cheapest', displayValue: 'Cheapest' },
           ],
         },
-        value: '',
+        value: 'fastest',
+        validation: {},
+        valid: true,
       },
     },
-    isLoading: false,
   }
 
   validateInput = (value, rules) => {
@@ -124,19 +132,21 @@ class ContactData extends Component {
     const updatedNestedKeys = {
       ...updatedOrderForm[inputIdentifier],
     }
-    const updatedValidation = {
-      ...updatedNestedKeys.validation,
-    }
+
     updatedNestedKeys.value = event.target.value
-    updatedValidation.valid = this.validateInput(
+    updatedNestedKeys.valid = this.validateInput(
       updatedNestedKeys.value,
       updatedNestedKeys.validation
     )
-    updatedNestedKeys.validation = updatedValidation
+    updatedNestedKeys.touched = true
     updatedOrderForm[inputIdentifier] = updatedNestedKeys
-    console.log(updatedOrderForm)
 
-    this.setState({ orderForm: updatedOrderForm })
+    let isAllValid = true
+    for (let key in updatedOrderForm) {
+      isAllValid = updatedOrderForm[key].valid && isAllValid
+    }
+
+    this.setState({ orderForm: updatedOrderForm, isFormValid: isAllValid })
   }
 
   render() {
@@ -146,6 +156,7 @@ class ContactData extends Component {
         id: key,
         config: this.state.orderForm[key],
       })
+      console.log(formElementsArray)
     }
 
     let form = (
@@ -156,10 +167,15 @@ class ContactData extends Component {
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
+            invalid={formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
             changed={event => this.inputChangedHandler(event, formElement.id)}
           ></Input>
         ))}
-        <Button btnType="Success">ORDER</Button>
+        <Button btnType="Success" disabled={!this.state.isFormValid}>
+          ORDER
+        </Button>
       </form>
     )
     if (this.state.isLoading) {
@@ -167,7 +183,7 @@ class ContactData extends Component {
     }
     return (
       <div className={classes.ContactData}>
-        <h4>Enter your Contact Data</h4>
+        <h4>Enter your Contact Information</h4>
         {form}
       </div>
     )
