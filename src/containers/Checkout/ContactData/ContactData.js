@@ -41,6 +41,8 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
+          minLength: 5,
+          maxLength: 6,
           valid: false,
         },
       },
@@ -83,8 +85,10 @@ class ContactData extends Component {
   }
 
   validateInput = (value, rules) => {
-    let isValid = false
-    if (rules.required) isValid = value.trim() !== ''
+    let isValid = true
+    if (rules.required) isValid = value.trim() !== '' && isValid
+    if (rules.minLength) isValid = value.length >= rules.minLength && isValid
+    if (rules.maxLength) isValid = value.length <= rules.maxLength && isValid
     return isValid
   }
 
@@ -121,10 +125,13 @@ class ContactData extends Component {
       ...updatedOrderForm[inputIdentifier],
     }
     const updatedValidation = {
-      ...updatedNestedKeys.validation
+      ...updatedNestedKeys.validation,
     }
     updatedNestedKeys.value = event.target.value
-    updatedValidation.valid = this.validateInput(updatedNestedKeys.value, updatedNestedKeys.validation)
+    updatedValidation.valid = this.validateInput(
+      updatedNestedKeys.value,
+      updatedNestedKeys.validation
+    )
     updatedNestedKeys.validation = updatedValidation
     updatedOrderForm[inputIdentifier] = updatedNestedKeys
     console.log(updatedOrderForm)
