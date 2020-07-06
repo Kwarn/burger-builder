@@ -4,33 +4,89 @@ import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import classes from './ContactData.module.css'
+import { elementType } from 'prop-types'
+import input from '../../../components/UI/Input/Input'
 
 class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    street: '',
-    postcode: '',
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name',
+        },
+        value: '',
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Street',
+        },
+        value: '',
+      },
+      postcode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Postcode',
+        },
+        value: '',
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country',
+        },
+        value: '',
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Email',
+        },
+        value: '',
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'Cheapest', displayValue: 'Cheapest' },
+          ],
+        },
+        value: '',
+      },
+    },
     isLoading: false,
   }
+
+  /*   createObjectStructure() {
+    const elemData = [
+      ['name', 'input', 'text', 'Your name'],
+      ['street', 'input', 'text', 'Post Code'],
+      ['country', 'input', 'text', 'Country'],
+      ['email', 'input', 'email', 'Your Email'],
+    ]
+    const orderForm = {}
+  } */
 
   orderHandler = event => {
     event.preventDefault()
     this.setState({ isLoading: true })
     // recalc price on server in future
     // validation required
+    const formData = {}
+    for (let formKeyId in this.state.orderForm) {
+      formData[formKeyId] = this.state.orderForm[formKeyId].value
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: this.state.name,
-        email: this.state.email,
-        address: {
-          street: this.state.street,
-          postcode: this.state.postcode,
-        },
-      },
-      deliveryMethod: 'fastest',
+      orderData: formData
     }
     axios
       .post('/orders.json', order)
@@ -43,55 +99,40 @@ class ContactData extends Component {
       })
   }
 
-  nameHandler = event => {
-    this.setState({ name: event.target.value })
-  }
-  emailHandler = event => {
-    this.setState({ email: event.target.value })
-  }
-  streetHandler = event => {
-    this.setState({ street: event.target.value })
-  }
-  postcodeHandler = event => {
-    this.setState({ postcode: event.target.value })
+  inputChangedHandler = (event, inputIdentifier) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    }
+    const updatedNestedKeys = {
+      ...updatedOrderForm[inputIdentifier],
+    }
+    updatedNestedKeys.value = event.target.value
+    updatedOrderForm[inputIdentifier] = updatedNestedKeys
+
+    this.setState({orderForm: updatedOrderForm})
   }
 
   render() {
+    const formElementsArray = []
+    for (let key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      })
+    }
+
     let form = (
-      <form>
-        <Input
-          inputtype="input"
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={this.state.name}
-          onChange={this.nameHandler}
-        ></Input>
-        <Input
-          inputtype="input"
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={this.state.email}
-          onChange={this.emailHandler}
-        ></Input>
-        <Input
-          inputtype="input"
-          type="text"
-          name="street"
-          placeholder="Street"
-          value={this.state.street}
-          onChange={this.streetHandler}
-        ></Input>
-        <Input
-          inputtype="input"
-          type="text"
-          name="postcode"
-          placeholder="Postcode"
-          value={this.state.postcode}
-          onChange={this.postcodeHandler}
-        ></Input>
-        <Button clicked={this.orderHandler} btnType="Success">
+      <form onSubmit={this.orderHandler}>
+        {formElementsArray.map(formElement => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={event => this.inputChangedHandler(event, formElement.id)}
+          ></Input>
+        ))}
+        <Button btnType="Success">
           ORDER
         </Button>
       </form>
