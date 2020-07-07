@@ -21,16 +21,8 @@ class BurgerBuilder extends Component {
     this.setState({ isModalOpen: !currentStatus })
   }
 
-  confirmPurchaseHandler = () => {
-    let queryParams = []
-    for (let key of Object.keys(this.props.ingredients))
-      queryParams.push(`${key}=${this.props.ingredients[key]}`)
-
-    this.props.history.push(
-      `/checkout/?${queryParams.join(
-        '&'
-      )}&price=${this.state.totalPrice.toFixed(2)}`
-    )
+  continuePurchaseHandler = () => {
+    this.props.history.push('/checkout')
   }
 
   render() {
@@ -68,7 +60,7 @@ class BurgerBuilder extends Component {
           totalPrice={this.props.totalPrice}
           ingredients={this.props.ingredients}
           cancelPurchase={this.orderNowHandler}
-          confirmPurchase={this.confirmPurchaseHandler}
+          confirmPurchase={this.continuePurchaseHandler}
         />
       )
     }

@@ -3,6 +3,7 @@ import * as actions from './actions'
 const initalState = {
   ingredients: { salad: 0, cheese: 0, bacon: 0, meat: 0 },
   totalPrice: 4.5,
+  purchaseable: false
 }
 
 const INGREDIENTS_PRICES = {

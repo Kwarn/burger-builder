@@ -26,8 +26,8 @@
   .Burger {
     width: 700px;
     height: 600px;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; */
   }
 }
