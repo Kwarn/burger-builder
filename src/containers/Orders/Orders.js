@@ -11,39 +11,41 @@ class Orders extends Component {
   }
 
   componentDidMount() {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     const orders = []
     axios
       .get('orders.json')
       .then(res => {
-
         for (let key in res.data) {
           orders.push({
             id: key,
             ingredients: res.data[key].ingredients,
-            price: res.data[key].price,
+            totalPrice: res.data[key].price,
           })
         }
-        this.setState({isLoading: false})
+        console.log(orders)
+        this.setState({ isLoading: false })
       })
       .catch(err => {
         console.log(err)
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
       })
-    this.setState({orders: orders})
+    this.setState({ orders: orders })
   }
 
   render() {
     let orders = <Spinner />
     if (!this.state.isLoading) {
-      orders = this.state.orders.map(order => <Order key={order.id} ingredients={order.ingredients} price={order.price}> </Order>)
+      orders = this.state.orders.map(order => (
+        <Order
+          key={order.id}
+          ingredients={order.ingredients}
+          totalPrice={order.totalPrice}
+        />
+      ))
     }
 
-    return (
-      <div>
-        {orders}
-      </div>
-    )
+    return <div>{orders}</div>
   }
 }
 
