@@ -1,6 +1,6 @@
 import React from 'react'
-import classes from './BuildControls.module.css'
 import BuildControl from './BuildControl/BuildControl'
+import classes from './BuildControls.module.css'
 
 const controls = [
   { label: 'Salad', type: 'salad' },

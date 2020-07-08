@@ -1,8 +1,8 @@
 import React from 'react'
-import Logo from '../../Logo/Logo'
 import NavigationItems from '../NavigationItems/NavigationItems'
-import classes from './Sidedraw.module.css'
 import Backdrop from '../../UI/Backdrop/Backdrop'
+import Logo from '../../Logo/Logo'
+import classes from './Sidedraw.module.css'
 
 const sideDraw = props => {
   let attachedClasses = [classes.Sidedraw, classes.Close]

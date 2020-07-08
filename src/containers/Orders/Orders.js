@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Order from '../../components/Order/Order'
 import axios from '../../axios-orders'
-import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler'
+import Spinner from '../../components/UI/Spinner/Spinner'
+import Order from '../../components/Order/Order'
 
 class Orders extends Component {
   state = {

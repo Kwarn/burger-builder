@@ -1,6 +1,6 @@
 import React from 'react'
-import classes from '../Logo/Logo.module.css'
 import { Link } from 'react-router-dom'
+import classes from '../Logo/Logo.module.css'
 
 import BurgerLogo from '../../Assets/Images/burgerLogo.png'
 

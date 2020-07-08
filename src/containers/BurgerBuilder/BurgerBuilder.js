@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from '../../axios-orders'
 import * as BurgerBuilderActions from '../../store/actions/index'
-import Burger from '../../components/Burger/Burger'
-import BuildControls from '../../components/Burger/BuildControls/BuildControls'
-import Modal from '../../components/UI/Modal/Modal'
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
-import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler'
+import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import Burger from '../../components/Burger/Burger'
+import Modal from '../../components/UI/Modal/Modal'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 class BurgerBuilder extends Component {
   state = {
@@ -91,7 +91,8 @@ const mapDipatchToProps = dispatch => {
       dispatch(BurgerBuilderActions.addIngredient(iName)),
     onRemoveIngredient: iName =>
       dispatch(BurgerBuilderActions.removeIngredient(iName)),
-    onInitIngredients: () => dispatch(BurgerBuilderActions.initIngredients()),
+    onInitIngredients: () => 
+      dispatch(BurgerBuilderActions.initIngredients()),
   }
 }
 export default connect(
