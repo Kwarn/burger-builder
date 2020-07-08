@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
-import * as BurgerBuilderActions from '../../store/actions/index'
+import { connect } from 'react-redux'
 import axios from '../../axios-orders'
+import * as BurgerBuilderActions from '../../store/actions/index'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler'
-import { connect } from 'react-redux'
 
 class BurgerBuilder extends Component {
   state = {
     isModalOpen: false,
-    loading: false,
-    error: false,
+  }
+
+  componentDidMount() {
+    this.props.onInitIngredients()
   }
 
   orderNowHandler = () => {
@@ -65,10 +67,6 @@ class BurgerBuilder extends Component {
       )
     }
 
-    if (this.state.loading) {
-      orderSummary = <Spinner />
-    }
-
     return (
       <>
         <Modal show={this.state.isModalOpen} toggle={this.orderNowHandler}>
@@ -93,6 +91,7 @@ const mapDipatchToProps = dispatch => {
       dispatch(BurgerBuilderActions.addIngredient(iName)),
     onRemoveIngredient: iName =>
       dispatch(BurgerBuilderActions.removeIngredient(iName)),
+    onInitIngredients: () => dispatch(BurgerBuilderActions.initIngredients()),
   }
 }
 export default connect(
