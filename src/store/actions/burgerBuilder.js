@@ -22,21 +22,25 @@ export const setIngredients = ingredients => {
   }
 }
 
-export const initIngredients = () => {
-  return dispatch => {
-    axios
-      .get('https://react-burger-builder-679aa.firebaseio.com/ingredients.json')
-      .then(res => {
-        dispatch(setIngredients(res.data))
-      })
-      .catch(err => {
-        dispatch(fetchingIngredientsFailed())
-      })
+export const fetchIngredientsFailed = () => {
+  return {
+    type: actionTypes.FETCH_INGREDIENTS_FAILED,
   }
 }
 
-export const fetchingIngredientsFailed = () => {
-  return {
-    type: actionTypes.FETCH_INGREDIENTS_FAILED,
+export const initIngredients = () => {
+  return dispatch => {
+    axios
+      .get('ingredients.json')
+      .then(res => {
+        if (!res.data) {
+          dispatch(fetchIngredientsFailed())
+        } else {
+          dispatch(setIngredients(res.data))
+        }
+      })
+      .catch(err => {
+        dispatch(fetchIngredientsFailed())
+      })
   }
 }

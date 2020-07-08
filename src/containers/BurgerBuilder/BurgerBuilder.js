@@ -37,7 +37,7 @@ class BurgerBuilder extends Component {
 
     let orderSummary = null
 
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p style={{ textAlign: 'center' }}>Error Fetching Ingredients</p>
     ) : (
       <Spinner></Spinner>
@@ -83,6 +83,7 @@ const mapStateToProps = state => {
     ingredients: state.ingredients,
     totalPrice: state.totalPrice,
     purchaseable: state.purchaseable,
+    error: state.error
   }
 }
 const mapDipatchToProps = dispatch => {
