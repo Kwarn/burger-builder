@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import * as actionTypes from '../actions/actionTypes'
 
 const initalState = {
   ingredients: { salad: 0, cheese: 0, bacon: 0, meat: 0 },
@@ -15,27 +15,27 @@ const INGREDIENTS_PRICES = {
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
-    case actions.ADD_INGREDIENT:
+    case actionTypes.ADD_INGREDIENT:
       return {
         ...state,
         ingredients: {
           ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
+          [action.iName]: state.ingredients[action.iName] + 1,
         },
         totalPrice:
-          state.totalPrice + INGREDIENTS_PRICES[action.ingredientName],
+          state.totalPrice + INGREDIENTS_PRICES[action.iName],
         purchaseable: true,
       }
 
-    case actions.REMOVE_INGREDIENT:
+    case actionTypes.REMOVE_INGREDIENT:
       return {
         ...state,
         ingredients: {
           ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
+          [action.iName]: state.ingredients[action.iName] - 1,
         },
         totalPrice:
-          state.totalPrice - INGREDIENTS_PRICES[action.ingredientName],
+          state.totalPrice - INGREDIENTS_PRICES[action.iName],
         purchaseable:
           Object.values(state.ingredients).reduce((acc, cur) => acc + cur) > 1,
       }

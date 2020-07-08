@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import * as actions from '../../store/actions'
+import * as BurgerBuilderActions from '../../store/actions/index'
 import axios from '../../axios-orders'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
@@ -90,9 +90,9 @@ const mapStateToProps = state => {
 const mapDipatchToProps = dispatch => {
   return {
     onAddIngredient: iName =>
-      dispatch({ type: actions.ADD_INGREDIENT, ingredientName: iName }),
+      dispatch(BurgerBuilderActions.addIngredient(iName)),
     onRemoveIngredient: iName =>
-      dispatch({ type: actions.REMOVE_INGREDIENT, ingredientName: iName }),
+      dispatch(BurgerBuilderActions.removeIngredient(iName)),
   }
 }
 export default connect(
