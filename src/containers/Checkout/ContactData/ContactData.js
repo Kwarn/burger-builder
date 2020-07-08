@@ -1,10 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from '../../../axios-orders'
+import * as actionTypes from '../../../store/actions/index'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import classes from './ContactData.module.css'
+
+
+
+/* 
+
+
+isLoading needs to be controlled by redux store orderReducer
+this is so we can correctly display the spinner and
+redirect the user after postOrderToDb success
+
+does 2 way input binding and form validation need to be handled by redux? 
+
+
+*/
+
+
 
 class ContactData extends Component {
   state = {
@@ -104,8 +121,7 @@ class ContactData extends Component {
   orderHandler = event => {
     event.preventDefault()
     this.setState({ isLoading: true })
-    // recalc price on server in future
-    // validation required
+
     const formData = {}
     for (let formKeyId in this.state.orderForm) {
       formData[formKeyId] = this.state.orderForm[formKeyId].value
@@ -115,15 +131,7 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData: formData,
     }
-    axios
-      .post('/orders.json', order)
-      .then(res => {
-        this.setState({ isLoading: false })
-        this.props.history.push('/orders')
-      })
-      .catch(err => {
-        this.setState({ isLoading: false })
-      })
+    this.props.onOrderHandler(order)
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
@@ -157,7 +165,6 @@ class ContactData extends Component {
         id: key,
         config: this.state.orderForm[key],
       })
-      console.log(formElementsArray)
     }
 
     let form = (
@@ -195,7 +202,14 @@ const mapStateToProps = state => {
   return {
     ingredients: state.ingredients,
     totalPrice: state.totalPrice,
+    orderForm: state.orderForm,
   }
 }
 
-export default connect(mapStateToProps)(ContactData)
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderHandler: (order) => dispatch(actionTypes.postOrderToDb(order)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
