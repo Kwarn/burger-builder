@@ -11,7 +11,7 @@ const reducer = (state = initalState, action) => {
         ...state,
         error: action.error
       }
-    case actionTypes.ORDER_COMPLETE: 
+    case actionTypes.POST_ORDER_SUCCESS: 
       return {
         ...state,
         redirect: true

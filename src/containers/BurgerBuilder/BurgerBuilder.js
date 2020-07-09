@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from '../../axios-orders'
-import * as BurgerBuilderActions from '../../store/actions/index'
+import * as actions from '../../store/actions/index'
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
@@ -89,11 +89,11 @@ const mapStateToProps = state => {
 const mapDipatchToProps = dispatch => {
   return {
     onAddIngredient: iName =>
-      dispatch(BurgerBuilderActions.addIngredient(iName)),
+      dispatch(actions.addIngredient(iName)),
     onRemoveIngredient: iName =>
-      dispatch(BurgerBuilderActions.removeIngredient(iName)),
+      dispatch(actions.removeIngredient(iName)),
     onInitIngredients: () => 
-      dispatch(BurgerBuilderActions.initIngredients()),
+      dispatch(actions.initIngredients()),
   }
 }
 export default connect(

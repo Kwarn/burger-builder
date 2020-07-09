@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import * as actionTypes from '../../../store/actions/index'
+import * as actions from '../../../store/actions/index'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
@@ -93,7 +93,8 @@ class ContactData extends Component {
       },
     },
   }
-
+  // bug: redirect is never set to false so consecutive orders get instantly redirected
+  // on contactData load
   componentDidMount = () => {
     if (this.props.redirect) {
       this.props.history.push('/orders')
@@ -110,7 +111,7 @@ class ContactData extends Component {
 
   orderHandler = event => {
     event.preventDefault()
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     const formData = {}
     for (let formKeyId in this.state.orderForm) {
       formData[formKeyId] = this.state.orderForm[formKeyId].value
@@ -149,7 +150,6 @@ class ContactData extends Component {
   }
 
   render() {
-
     const formElementsArray = []
     for (let key in this.state.orderForm) {
       formElementsArray.push({
@@ -193,14 +193,17 @@ const mapStateToProps = state => {
   return {
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
-    redirect: state.contact.redirect
+    redirect: state.contact.redirect,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderHandler: (order) => dispatch(actionTypes.postOrderToDb(order)),
+    onOrderHandler: order => dispatch(actions.postOrderToDb(order)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ContactData))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ContactData))

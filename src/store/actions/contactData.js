@@ -1,9 +1,9 @@
 import axios from '../../axios-orders'
 import * as actionTypes from './actionTypes'
 
-export const orderComplete = () => {
+export const postOrderSuccess = () => {
   return {
-    type: actionTypes.ORDER_COMPLETE,
+    type: actionTypes.POST_ORDER_SUCCESS,
   }
 }
 
@@ -19,7 +19,7 @@ export const postOrderToDb = order => {
     axios
       .post('/orders.json', order)
       .then(res => {
-        if (res.data) dispatch(orderComplete())
+        if (res.data) dispatch(postOrderSuccess())
         else dispatch(postOrderFailed('Error Posting Order'))
       })
       .catch(err => {

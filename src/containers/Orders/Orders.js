@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../axios-orders'
 import { connect } from 'react-redux'
-import * as ordersActions from '../../store/actions/index'
+import * as actions from '../../store/actions/index'
 import withErrorHandler from '../../Hoc/withErrorHandler/withErrorHandler'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import Order from '../../components/Order/Order'
@@ -34,7 +34,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchOrdersHandler: () => dispatch(ordersActions.fetchOrdersFromDb()),
+    onFetchOrdersHandler: () => dispatch(actions.fetchOrdersFromDb()),
   }
 }
 
