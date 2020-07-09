@@ -9,7 +9,6 @@ import classes from './ContactData.module.css'
 
 class ContactData extends Component {
   state = {
-    isLoading: false,
     isFormValid: false,
     orderForm: {
       name: {
@@ -93,13 +92,6 @@ class ContactData extends Component {
       },
     },
   }
-  // bug: redirect is never set to false so consecutive orders get instantly redirected
-  // on contactData load
-  componentDidMount = () => {
-    if (this.props.redirect) {
-      this.props.history.push('/orders')
-    }
-  }
 
   validateInput = (value, rules) => {
     let isValid = true
@@ -111,17 +103,16 @@ class ContactData extends Component {
 
   orderHandler = event => {
     event.preventDefault()
-    this.setState({ isLoading: true })
     const formData = {}
     for (let formKeyId in this.state.orderForm) {
       formData[formKeyId] = this.state.orderForm[formKeyId].value
     }
     const order = {
-      // props ingredients doesn't exist
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData,
     }
+    this.props.onLoadingHandler()
     this.props.onOrderHandler(order)
   }
 
@@ -157,28 +148,29 @@ class ContactData extends Component {
         config: this.state.orderForm[key],
       })
     }
-
-    let form = (
-      <form onSubmit={this.orderHandler}>
-        {formElementsArray.map(formElement => (
-          <Input
-            key={formElement.id}
-            elementType={formElement.config.elementType}
-            elementConfig={formElement.config.elementConfig}
-            value={formElement.config.value}
-            invalid={formElement.config.valid}
-            shouldValidate={formElement.config.validation}
-            touched={formElement.config.touched}
-            changed={event => this.inputChangedHandler(event, formElement.id)}
-          ></Input>
-        ))}
-        <Button btnType="Success" disabled={!this.state.isFormValid}>
-          ORDER
-        </Button>
-      </form>
-    )
-    if (this.state.isLoading) {
+    let form = null
+    if (this.props.isLoading) {
       form = <Spinner />
+    } else {
+      form = (
+        <form onSubmit={this.orderHandler}>
+          {formElementsArray.map(formElement => (
+            <Input
+              key={formElement.id}
+              elementType={formElement.config.elementType}
+              elementConfig={formElement.config.elementConfig}
+              value={formElement.config.value}
+              invalid={formElement.config.valid}
+              shouldValidate={formElement.config.validation}
+              touched={formElement.config.touched}
+              changed={event => this.inputChangedHandler(event, formElement.id)}
+            ></Input>
+          ))}
+          <Button btnType="Success" disabled={!this.state.isFormValid}>
+            ORDER
+          </Button>
+        </form>
+      )
     }
     return (
       <div className={classes.ContactData}>
@@ -193,12 +185,14 @@ const mapStateToProps = state => {
   return {
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
-    redirect: state.contact.redirect,
+    isLoading: state.orders.isLoading,
+    redirect: state.orders.redirect,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    onLoadingHandler: () => dispatch(actions.isLoading()),
     onOrderHandler: order => dispatch(actions.postOrderToDb(order)),
   }
 }

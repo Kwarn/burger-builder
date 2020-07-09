@@ -2,6 +2,7 @@ export {
   addIngredient,
   removeIngredient,
   initIngredients,
+  initPurchase
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
-export { fetchOrdersFromDb } from './orders'
+export { isLoading, fetchOrdersFromDb } from './orders'
