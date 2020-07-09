@@ -1,16 +1,20 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initalState = {
-  error: null
+  orders: [],
 }
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
-    case actionTypes.ORDER_COMPLETE: 
+    case actionTypes.FETCH_ORDERS_FAILED:
       return {
         ...state,
-        
-        // update state, is loading, find a way to redirect via props, conditional render Order Module?
+        error: action.error,
+      }
+    case actionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.orders,
       }
     default:
       return state

@@ -3,13 +3,14 @@ import * as actionTypes from './actionTypes'
 
 export const orderComplete = () => {
   return {
-    type: actionTypes.ORDER_COMPLETE
+    type: actionTypes.ORDER_COMPLETE,
   }
 }
 
-export const errorPostingToDb = () => {
+export const postOrderFailed = error => {
   return {
-    type: actionTypes.POST_ORDER_FAILED
+    type: actionTypes.POST_ORDER_FAILED,
+    error: error,
   }
 }
 
@@ -18,13 +19,11 @@ export const postOrderToDb = order => {
     axios
       .post('/orders.json', order)
       .then(res => {
-        if (res.data)
-          dispatch(orderComplete())
-        else
-          dispatch(errorPostingToDb())
+        if (res.data) dispatch(orderComplete())
+        else dispatch(postOrderFailed('Error Posting Order'))
       })
       .catch(err => {
-        dispatch(errorPostingToDb())
+        dispatch(postOrderFailed(err))
       })
   }
 }

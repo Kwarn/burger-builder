@@ -1,27 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import axios from '../../../axios-orders'
+import { withRouter } from 'react-router-dom'
 import * as actionTypes from '../../../store/actions/index'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import classes from './ContactData.module.css'
-
-
-
-/* 
-
-
-isLoading needs to be controlled by redux store orderReducer
-this is so we can correctly display the spinner and
-redirect the user after postOrderToDb success
-
-does 2 way input binding and form validation need to be handled by redux? 
-
-
-*/
-
-
 
 class ContactData extends Component {
   state = {
@@ -110,6 +94,12 @@ class ContactData extends Component {
     },
   }
 
+  componentDidMount = () => {
+    if (this.props.redirect) {
+      this.props.history.push('/orders')
+    }
+  }
+
   validateInput = (value, rules) => {
     let isValid = true
     if (rules.required) isValid = value.trim() !== '' && isValid
@@ -120,13 +110,13 @@ class ContactData extends Component {
 
   orderHandler = event => {
     event.preventDefault()
-    this.setState({ isLoading: true })
-
+    this.setState({isLoading: true})
     const formData = {}
     for (let formKeyId in this.state.orderForm) {
       formData[formKeyId] = this.state.orderForm[formKeyId].value
     }
     const order = {
+      // props ingredients doesn't exist
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData,
@@ -159,6 +149,7 @@ class ContactData extends Component {
   }
 
   render() {
+
     const formElementsArray = []
     for (let key in this.state.orderForm) {
       formElementsArray.push({
@@ -200,9 +191,9 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    orderForm: state.orderForm,
+    ingredients: state.burger.ingredients,
+    totalPrice: state.burger.totalPrice,
+    redirect: state.contact.redirect
   }
 }
 
@@ -212,4 +203,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ContactData))
