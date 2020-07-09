@@ -7,10 +7,12 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 import Order from '../../components/Order/Order'
 
 class Orders extends Component {
+  // fetches orders from db
   componentDidMount() {
     this.props.onFetchOrdersHandler()
   }
 
+  // conditionally renders Spinner/orders if fetching ingreedients is successful
   render() {
     let orders = <Spinner />
     if (this.props.orders) {

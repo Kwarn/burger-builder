@@ -92,7 +92,9 @@ class ContactData extends Component {
       },
     },
   }
-
+  
+  // returns false if ANY validation rules for the input-feild fail their check
+  // receives rules from each input-field's 'validation' object - orderForm[...].validation
   validateInput = (value, rules) => {
     let isValid = true
     if (rules.required) isValid = value.trim() !== '' && isValid
@@ -101,6 +103,7 @@ class ContactData extends Component {
     return isValid
   }
 
+  // creates order object for database. Initiates loading spinner. 
   orderHandler = event => {
     event.preventDefault()
     const formData = {}
@@ -116,6 +119,8 @@ class ContactData extends Component {
     this.props.onOrderHandler(order)
   }
 
+  // handles two way binding, triggers validation checks before updating local state
+  // deep clones nested data to prevent direct state mutation.
   inputChangedHandler = (event, inputIdentifier) => {
     const updatedOrderForm = {
       ...this.state.orderForm,
@@ -139,7 +144,8 @@ class ContactData extends Component {
 
     this.setState({ orderForm: updatedOrderForm, isFormValid: isAllValid })
   }
-
+  
+  // conditionally renders <Spinner /> while isLoading otherwise renders all input-elements & 'ORDER' button
   render() {
     const formElementsArray = []
     for (let key in this.state.orderForm) {

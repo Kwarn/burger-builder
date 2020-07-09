@@ -14,20 +14,26 @@ class BurgerBuilder extends Component {
     isModalOpen: false,
   }
 
+  // fetches ingredients from db
   componentDidMount() {
     this.props.onInitIngredients()
   }
 
+  // controls toggling of orderSummary modal
   orderNowHandler = () => {
     const currentStatus = this.state.isModalOpen
     this.setState({ isModalOpen: !currentStatus })
   }
 
+  // starts "tracking" checkout process. When complete we can redirect the user
+  // eventually an async push to db completes and 'state.orders.redirect' will be set to true 
   continuePurchaseHandler = () => {
     this.props.onInitPurchase()
     this.props.history.push('/checkout')
   }
 
+  // conditionally renders UI Elements - Spinner while waiting for db.get()
+  // Error <div> when error - otherwise burger & buildcontrols & orderSummary modal
   render() {
     const disabledInfo = {
       ...this.props.ingredients,

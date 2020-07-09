@@ -3,7 +3,7 @@ import classes from './BuildControl.module.css'
 
 const buildControl = props => (
   <div className={classes.BuildControl}>
-    <div className={classes.Label}>{props.label}</div>
+    <div className={classes.Label}>{props.iName}</div>
     <button
       disabled={props.disabled}
       onClick={props.removeIngredient}
