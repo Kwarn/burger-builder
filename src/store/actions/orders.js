@@ -1,7 +1,6 @@
 import axios from '../../axios-orders'
 import * as actionTypes from './actionTypes'
 
-
 export const fetchOrdersSuccess = orders => {
   return {
     type: actionTypes.FETCH_ORDERS_SUCCESS,
@@ -15,12 +14,12 @@ export const fetchOrdersFailed = () => {
   }
 }
 
-export const fetchOrdersFromDb = () => {
+export const fetchOrders = () => {
   return dispatch => {
+    dispatch(isLoading())
     axios
       .get('orders.json')
       .then(res => {
-
         if (res.data) {
           const orders = []
           for (let key in res.data) {
@@ -34,16 +33,16 @@ export const fetchOrdersFromDb = () => {
         } else {
           dispatch(fetchOrdersFailed('Error Fetching Orders'))
         }
-        dispatch(isLoading())
       })
       .catch(err => {
         dispatch(fetchOrdersFailed(err))
       })
+    dispatch(isLoading())
   }
 }
 
 export const isLoading = () => {
   return {
-    type: actionTypes.IS_LOADING
+    type: actionTypes.IS_LOADING,
   }
 }

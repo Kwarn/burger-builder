@@ -36,7 +36,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchOrdersHandler: () => dispatch(actions.fetchOrdersFromDb()),
+    onFetchOrdersHandler: () => dispatch(actions.fetchOrders()),
   }
 }
 

@@ -59,7 +59,7 @@ class BurgerBuilder extends Component {
             addIngredient={iName => this.props.onAddIngredient(iName)}
             removeIngredient={iName => this.props.onRemoveIngredient(iName)}
             disabled={disabledInfo}
-            purchase={this.props.purchaseable}
+            purchase={this.props.isPurchasable}
             ordered={this.orderNowHandler}
           />
         </>
@@ -89,7 +89,7 @@ const mapStateToProps = state => {
   return {
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
-    purchaseable: state.burger.purchaseable,
+    isPurchasable: state.burger.isPurchasable,
     error: state.burger.error,
   }
 }

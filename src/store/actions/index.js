@@ -5,4 +5,4 @@ export {
   initPurchase
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
-export { isLoading, fetchOrdersFromDb } from './orders'
+export { isLoading, fetchOrders } from './orders'
