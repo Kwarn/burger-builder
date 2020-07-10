@@ -47,6 +47,6 @@ export const initIngredients = () => {
 
 export const initPurchase = () => {
   return {
-    type: actionTypes.INIT_PURCHASE
+    type: actionTypes.INIT_PURCHASE,
   }
 }

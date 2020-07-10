@@ -192,7 +192,6 @@ const mapStateToProps = state => {
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
     isLoading: state.orders.isLoading,
-    redirect: state.orders.redirect,
   }
 }
 

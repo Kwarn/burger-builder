@@ -16,11 +16,11 @@ class Checkout extends Component {
     let summary = <Redirect to="/" />
     if (this.props.ingredients) {
 
-      const redirect = this.props.redirect ? <Redirect to="/orders" /> : null
+      const shouldRedirect = this.props.shouldRedirect ? <Redirect to="/orders" /> : null
 
       summary = (
         <>
-          {redirect}
+          {shouldRedirect}
           <CheckoutSummary
             checkoutCancelled={this.checkoutCancelledHandler}
             checkoutContinued={this.checkoutContinuedHandler}
@@ -40,7 +40,7 @@ class Checkout extends Component {
 const mapStateToProps = state => {
   return {
     ingredients: state.burger.ingredients,
-    redirect: state.orders.redirect,
+    shouldRedirect: state.orders.shouldRedirect,
   }
 }
 

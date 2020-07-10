@@ -37,6 +37,7 @@ export const fetchOrders = () => {
       .catch(err => {
         dispatch(fetchOrdersFailed(err))
       })
+
     dispatch(isLoading())
   }
 }
