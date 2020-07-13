@@ -14,10 +14,10 @@ export const postOrderFailed = error => {
   }
 }
 
-export const postOrderToDb = order => {
+export const postOrderToDb = (order, token) => {
   return dispatch => {
     axios
-      .post('/orders.json', order)
+      .post('/orders.json?auth=' + token, order)
       .then(res => {
         if (res.data) dispatch(postOrderSuccess())
         else dispatch(postOrderFailed('Error Posting Order'))

@@ -14,11 +14,11 @@ export const fetchOrdersFailed = () => {
   }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
   return dispatch => {
     dispatch(isLoading())
     axios
-      .get('orders.json')
+      .get('orders.json?auth=' + token)
       .then(res => {
         if (res.data) {
           const orders = []

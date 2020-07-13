@@ -4,7 +4,7 @@ import Layout from './Hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import Checkout from './containers/Checkout/Checkout'
 import Orders from './containers/Orders/Orders'
-import Auth from './components/Auth/Auth'
+import Auth from './containers/Auth/Auth'
 import './App.css'
 
 function App() {

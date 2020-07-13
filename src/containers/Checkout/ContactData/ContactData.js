@@ -115,8 +115,8 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData: formData,
     }
-    this.props.onLoadingHandler()
-    this.props.onOrderHandler(order)
+    this.props.onLoading()
+    this.props.onOrderBurger(order, this.props.token)
   }
 
   // handles two way binding, triggers validation checks before updating local state
@@ -192,13 +192,14 @@ const mapStateToProps = state => {
     ingredients: state.burger.ingredients,
     totalPrice: state.burger.totalPrice,
     isLoading: state.orders.isLoading,
+    token: state.auth.token 
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoadingHandler: () => dispatch(actions.isLoading()),
-    onOrderHandler: order => dispatch(actions.postOrderToDb(order)),
+    onLoading: () => dispatch(actions.isLoading()),
+    onOrderBurger: (order, token) => dispatch(actions.postOrderToDb(order, token)),
   }
 }
 
