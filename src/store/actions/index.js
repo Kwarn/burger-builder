@@ -7,4 +7,4 @@ export {
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
 export { toggleIsLoading, fetchOrders } from './orders'
-export { auth, logout, redirectPathOnLogin, resetRedirectPath } from './auth'
+export { auth, logout, redirectPathOnLogin, resetRedirectPath, tryAutoLogin } from './auth'

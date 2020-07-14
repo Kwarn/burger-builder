@@ -9,26 +9,26 @@ const initalState = {
   redirectPathOnLogin: '/',
 }
 
-export const resetRedirectPath = (state, action) => {
+export const resetRedirectPath = (state) => {
   return updateObject(state, {
     redirectPathOnLogin: '/',
   })
 }
 
-export const redirectPathOnLogin = (state, action) => {
+export const redirectPathOnLogin = (state) => {
   return updateObject(state, {
     redirectPathOnLogin: '/checkout',
   })
 }
 
-export const authLogout = (state, action) => {
+export const authLogout = (state) => {
   return updateObject(state, {
     token: null,
     userId: null,
   })
 }
 
-const authStart = (state, action) => {
+const authStart = (state) => {
   return updateObject(state, { error: null, isLoading: true })
 }
 
