@@ -10,7 +10,7 @@ class Checkout extends Component {
   checkoutContinuedHandler = () =>
     this.props.history.replace('/checkout/contact-data')
 
-  // redirects user if /contact-data is accessed directly and burger ingredients is empty
+  // redirects user if /contact-data is accessed via URL and burger ingredients is empty
   // redirects user to '/orders' when order is successfully pushed to db
   render() {
     let summary = <Redirect to="/" />
