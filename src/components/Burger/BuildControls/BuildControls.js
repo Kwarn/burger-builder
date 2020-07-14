@@ -30,7 +30,7 @@ const buildControls = props => (
       onClick={props.ordered}
       className={classes.OrderButton}
     >
-      Order Now
+      {props.isAuth ? 'ORDER NOW' : 'SIGN UP TO CONTINUE' }
     </button>
   </div>
 )

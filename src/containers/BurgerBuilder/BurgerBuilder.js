@@ -14,19 +14,24 @@ class BurgerBuilder extends Component {
     isModalOpen: false,
   }
 
-  // fetches ingredients from db
+  // decides whether to fetch ingredients from db, handles resetting on state on empty burger
   componentDidMount() {
-    this.props.onInitIngredients()
+    if (!this.props.ingredients) this.props.onInitIngredients()
   }
 
   // controls toggling of orderSummary modal
   orderNowHandler = () => {
-    const currentStatus = this.state.isModalOpen
-    this.setState({ isModalOpen: !currentStatus })
+    if (this.props.isAuth) {
+      const currentStatus = this.state.isModalOpen
+      this.setState({ isModalOpen: !currentStatus })
+    } else {
+      this.props.onForceLogin()
+      this.props.history.push('/login')
+    }
   }
 
   // starts "tracking" checkout process. When complete we can redirect the user
-  // eventually an async push to db completes and 'state.orders.redirect' will be set to true 
+  // eventually an async push to db completes and 'state.orders.redirect' will be set to true
   continuePurchaseHandler = () => {
     this.props.onInitPurchase()
     this.props.history.push('/checkout')
@@ -61,6 +66,7 @@ class BurgerBuilder extends Component {
             disabled={disabledInfo}
             purchase={this.props.isPurchasable}
             ordered={this.orderNowHandler}
+            isAuth={this.props.isAuth}
           />
         </>
       )
@@ -91,6 +97,7 @@ const mapStateToProps = state => {
     totalPrice: state.burger.totalPrice,
     isPurchasable: state.burger.isPurchasable,
     error: state.burger.error,
+    isAuth: state.auth.token !== null,
   }
 }
 const mapDipatchToProps = dispatch => {
@@ -99,6 +106,7 @@ const mapDipatchToProps = dispatch => {
     onRemoveIngredient: iName => dispatch(actions.removeIngredient(iName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.initPurchase()),
+    onForceLogin: () => dispatch(actions.redirectPathOnLogin()),
   }
 }
 export default connect(

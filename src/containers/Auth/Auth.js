@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import * as actions from '../../store/actions/index'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
@@ -39,6 +40,12 @@ class Auth extends Component {
       },
     },
     isSignup: true,
+  }
+
+  componentDidMount = () => {
+    if (!this.props.isPurchasable){
+      this.props.onSetRedirectPathToDefault()
+    }
   }
 
   validateInput = (value, rules) => {
@@ -110,6 +117,11 @@ class Auth extends Component {
 
     if (this.state.isLoading) form = <Spinner />
 
+    let redirect = null
+    if (this.props.isAuth) {
+      redirect = <Redirect to={this.props.redirectPathOnLogin} />
+    }
+
     let errorMessage = null
     if (this.props.error) {
       errorMessage = <p>{this.props.error.message}</p>
@@ -117,17 +129,15 @@ class Auth extends Component {
 
     return (
       <div className={classes.Auth}>
-        <h1 style={{ textAlign: 'center' }}>
-          {this.state.isSignup ? 'SIGN-UP' : 'SIGN-IN'}
-        </h1>
+        <h1>{this.state.isSignup ? 'SIGN-UP' : 'SIGN-IN'}</h1>
         <Button clicked={this.switchAuthModeHandler} btnType="Danger">
           Switch to {this.state.isSignup ? 'Sign in' : 'Sign up'}
         </Button>
         <form onSubmit={this.submitHandler}>
+          {redirect}
           {errorMessage}
           {form}
           <Button btnType="Success">Submit</Button>
-          <Button btnType="Danger">Cancel</Button>
         </form>
       </div>
     )
@@ -137,12 +147,18 @@ const mapStateToProps = state => {
   return {
     isLoading: state.auth.isLoading,
     error: state.auth.error,
+    isAuth: state.auth.token !== null,
+    isPurchasable: state.burger.isPurchasable,
+    redirectPathOnLogin: state.auth.redirectPathOnLogin,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
+    onSetRedirectPathToDefault: () => {
+      dispatch(actions.resetRedirectPath())
+    }
   }
 }
 

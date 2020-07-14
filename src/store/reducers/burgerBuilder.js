@@ -16,8 +16,9 @@ const INGREDIENTS_PRICES = {
 }
 
 const addIngredient = (state, action) => {
-  const iToUpdate = { [action.iName]: state.ingredients[action.iName] + 1 }
-  const updatedIngredients = updateObject(state.ingredients, iToUpdate)
+  const updatedIngredients = updateObject(state.ingredients, {
+    [action.iName]: state.ingredients[action.iName] + 1,
+  })
   const stateToUpdate = {
     ingredients: updatedIngredients,
     totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.iName],
@@ -28,11 +29,12 @@ const addIngredient = (state, action) => {
 
 // isPurchasable disables 'Order now' button if removing this ingredient leaves the burger empty
 const removeIngredient = (state, action) => {
-  const iToUpdate = { [action.iName]: state.ingredients[action.iName] - 1 }
-  const updatedIngredients = updateObject(state.ingredients, iToUpdate)
+  const updatedIngredients = updateObject(state.ingredients, {
+    [action.iName]: state.ingredients[action.iName] - 1,
+  })
   const stateToUpdate = {
     ingredients: updatedIngredients,
-    totalPrice: state.totalPrice + INGREDIENTS_PRICES[action.iName],
+    totalPrice: state.totalPrice - INGREDIENTS_PRICES[action.iName],
     isPurchasable:
       Object.values(state.ingredients).reduce((acc, cur) => acc + cur) > 1,
   }

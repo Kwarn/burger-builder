@@ -3,6 +3,18 @@ import axios from 'axios'
 
 const FIREBASE_API_KEY = 'AIzaSyAzXidjldfe5JtOOzrcoCz4siqPBqEnFsI'
 
+export const redirectPathOnLogin = () => {
+  return {
+    type: actionTypes.REDIRECT_PATH_ON_LOGIN
+  }
+}
+
+export const resetRedirectPath = () => {
+  return {
+    type: actionTypes.RESET_REDIRECT_PATH
+  }
+}
+
 export const logout = () => {
   return {
     type: actionTypes.AUTH_LOGOUT,
