@@ -115,7 +115,7 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData: formData,
     }
-    this.props.onLoading()
+    this.props.onToggleLoading()
     this.props.onOrderBurger(order, this.props.token)
   }
 
