@@ -14,9 +14,9 @@ export const fetchOrdersFailed = () => {
   }
 }
 
-export const fetchOrders = (token) => {
+export const fetchOrders = token => {
   return dispatch => {
-    dispatch(isLoading())
+    dispatch(toggleIsLoading())
     axios
       .get('orders.json?auth=' + token)
       .then(res => {
@@ -33,17 +33,17 @@ export const fetchOrders = (token) => {
         } else {
           dispatch(fetchOrdersFailed('Error Fetching Orders'))
         }
+        dispatch(toggleIsLoading())
       })
       .catch(err => {
         dispatch(fetchOrdersFailed(err))
+        dispatch(toggleIsLoading())
       })
-
-    dispatch(isLoading())
   }
 }
 
-export const isLoading = () => {
+export const toggleIsLoading = () => {
   return {
-    type: actionTypes.IS_LOADING,
+    type: actionTypes.TOGGLE_IS_LOADING,
   }
 }

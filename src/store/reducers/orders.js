@@ -9,7 +9,7 @@ const initalState = {
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
-    case actionTypes.IS_LOADING:
+    case actionTypes.TOGGLE_IS_LOADING:
       return updateObject(state, { isLoading: !state.isLoading })
 
     case actionTypes.POST_ORDER_FAILED:

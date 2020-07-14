@@ -198,7 +198,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoading: () => dispatch(actions.isLoading()),
+    onToggleLoading: () => dispatch(actions.toggleIsLoading()),
     onOrderBurger: (order, token) => dispatch(actions.postOrderToDb(order, token)),
   }
 }

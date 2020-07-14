@@ -26,7 +26,6 @@ class BurgerBuilder extends Component {
       const currentStatus = this.state.isModalOpen
       this.setState({ isModalOpen: !currentStatus })
     } else {
-      this.props.onForceLogin()
       this.props.history.push('/login')
     }
   }
@@ -107,7 +106,6 @@ const mapDipatchToProps = dispatch => {
     onRemoveIngredient: iName => dispatch(actions.removeIngredient(iName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.initPurchase()),
-    onForceLogin: () => dispatch(actions.redirectPathOnLogin()),
     onResetBurgerBuilder: () => dispatch(actions.resetBurgerBuilder())
   }
 }

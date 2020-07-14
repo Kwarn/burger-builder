@@ -6,5 +6,5 @@ export {
   resetBurgerBuilder
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
-export { isLoading, fetchOrders } from './orders'
+export { toggleIsLoading, fetchOrders } from './orders'
 export { auth, logout, redirectPathOnLogin, resetRedirectPath } from './auth'
