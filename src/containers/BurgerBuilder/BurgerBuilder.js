@@ -17,6 +17,7 @@ class BurgerBuilder extends Component {
   // decides whether to fetch ingredients from db, handles resetting on state on empty burger
   componentDidMount() {
     if (!this.props.ingredients) this.props.onInitIngredients()
+    else this.props.onResetBurgerBuilder()
   }
 
   // controls toggling of orderSummary modal
@@ -107,6 +108,7 @@ const mapDipatchToProps = dispatch => {
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.initPurchase()),
     onForceLogin: () => dispatch(actions.redirectPathOnLogin()),
+    onResetBurgerBuilder: () => dispatch(actions.resetBurgerBuilder())
   }
 }
 export default connect(

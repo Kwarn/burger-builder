@@ -43,9 +43,10 @@ class Auth extends Component {
   }
 
   componentDidMount = () => {
-    if (!this.props.isPurchasable){
+    if (!this.props.isPurchasable)
       this.props.onSetRedirectPathToDefault()
-    }
+    else 
+      this.props.onRedirectToCheckout()
   }
 
   validateInput = (value, rules) => {
@@ -158,7 +159,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(actions.auth(email, password, isSignup)),
     onSetRedirectPathToDefault: () => {
       dispatch(actions.resetRedirectPath())
-    }
+    },
+    onRedirectToCheckout: () => {dispatch(actions.redirectPathOnLogin())}
   }
 }
 

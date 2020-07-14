@@ -3,6 +3,7 @@ export {
   removeIngredient,
   initIngredients,
   initPurchase,
+  resetBurgerBuilder
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
 export { isLoading, fetchOrders } from './orders'

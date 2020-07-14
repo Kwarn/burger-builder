@@ -1,6 +1,12 @@
 import axios from '../../axios-orders'
 import * as actionTypes from './actionTypes'
 
+export const resetBurgerBuilder = () => {
+  return {
+    type: actionTypes.RESET_BURGER_BUILDER
+  }
+}
+
 export const addIngredient = name => {
   return {
     type: actionTypes.ADD_INGREDIENT,

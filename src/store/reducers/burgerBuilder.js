@@ -2,7 +2,12 @@ import * as actionTypes from '../actions/actionTypes'
 import { updateObject } from '../utility'
 
 const initalState = {
-  ingredients: null,
+  ingredients: {
+    salad: 0,
+    cheese: 0,
+    bacon: 0,
+    meat: 0,
+  },
   totalPrice: 4.5,
   isPurchasable: false,
   error: false,
@@ -58,6 +63,9 @@ const setIngredients = (state, action) => {
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
+    case actionTypes.RESET_BURGER_BUILDER:
+      return updateObject(state, initalState)
+
     case actionTypes.ADD_INGREDIENT:
       return addIngredient(state, action)
 
