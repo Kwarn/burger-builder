@@ -9,15 +9,9 @@ const initalState = {
   redirectPathOnLogin: '/',
 }
 
-export const resetRedirectPath = (state) => {
+export const setRedirectPathOnLogin = (state, action) => {
   return updateObject(state, {
-    redirectPathOnLogin: '/',
-  })
-}
-
-export const redirectPathOnLogin = (state) => {
-  return updateObject(state, {
-    redirectPathOnLogin: '/checkout',
+    redirectPathOnLogin: action.path,
   })
 }
 
@@ -55,10 +49,8 @@ const reducer = (state = initalState, action) => {
       return authFailed(state, action)
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action)
-    case actionTypes.REDIRECT_PATH_ON_LOGIN:
-      return redirectPathOnLogin(state, action)
-    case actionTypes.RESET_REDIRECT_PATH:
-      return resetRedirectPath(state, action)
+    case actionTypes.SET_REDIRECT_PATH_ON_LOGIN:
+      return setRedirectPathOnLogin(state, action)
     default:
       return state
   }

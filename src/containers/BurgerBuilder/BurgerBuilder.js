@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
       const currentStatus = this.state.isModalOpen
       this.setState({ isModalOpen: !currentStatus })
     } else {
+      this.props.onSetRedirectPathOnLogin('/checkout')
       this.props.history.push('/login')
     }
   }
@@ -106,7 +107,10 @@ const mapDipatchToProps = dispatch => {
     onRemoveIngredient: iName => dispatch(actions.removeIngredient(iName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.initPurchase()),
-    onResetBurgerBuilder: () => dispatch(actions.resetBurgerBuilder())
+    onResetBurgerBuilder: () => dispatch(actions.resetBurgerBuilder()),
+    onSetRedirectPathOnLogin: (path) => {
+      dispatch(actions.setRedirectPathOnLogin(path))
+    },
   }
 }
 export default connect(

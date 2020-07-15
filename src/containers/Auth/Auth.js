@@ -42,11 +42,10 @@ class Auth extends Component {
     isSignup: true,
   }
 
-  componentDidMount = () => {
-    if (!this.props.isPurchasable)
-      this.props.onSetRedirectPathToDefault()
-    else 
-      this.props.onRedirectToCheckout()
+  componentDidMount() {
+    if (!this.props.isPurchasable && this.props.redirectPathOnLogin !== '/') {
+      this.props.onSetRedirectPathOnLogin('/')
+    }
   }
 
   validateInput = (value, rules) => {
@@ -59,7 +58,6 @@ class Auth extends Component {
       const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
       isValid = pattern.test(value) && isValid
     }
-
     return isValid
   }
 
@@ -130,13 +128,13 @@ class Auth extends Component {
 
     return (
       <div className={classes.Auth}>
+        {redirect}
+        {errorMessage}
         <h1>{this.state.isSignup ? 'SIGN-UP' : 'SIGN-IN'}</h1>
         <Button clicked={this.switchAuthModeHandler} btnType="Danger">
           Switch to {this.state.isSignup ? 'Sign in' : 'Sign up'}
         </Button>
         <form onSubmit={this.submitHandler}>
-          {redirect}
-          {errorMessage}
           {form}
           <Button btnType="Success">Submit</Button>
         </form>
@@ -157,10 +155,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
-    onSetRedirectPathToDefault: () => {
-      dispatch(actions.resetRedirectPath())
+    onSetRedirectPathOnLogin: path => {
+      dispatch(actions.setRedirectPathOnLogin(path))
     },
-    onRedirectToCheckout: () => {dispatch(actions.redirectPathOnLogin())}
   }
 }
 
