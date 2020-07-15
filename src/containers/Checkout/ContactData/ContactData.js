@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../../store/actions/index'
+import { updateObject } from '../../../shared/utility'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
@@ -92,7 +93,7 @@ class ContactData extends Component {
       },
     },
   }
-  
+
   // returns false if ANY validation rules for the input-feild fail their check
   // receives rules from each input-field's 'validation' object - orderForm[...].validation
   validateInput = (value, rules) => {
@@ -103,7 +104,7 @@ class ContactData extends Component {
     return isValid
   }
 
-  // creates order object for database. Initiates loading spinner. 
+  // creates order object for database. Initiates loading spinner.
   orderHandler = event => {
     event.preventDefault()
     const formData = {}
@@ -123,20 +124,20 @@ class ContactData extends Component {
   // handles two way binding, triggers validation checks before updating local state
   // deep clones nested data to prevent direct state mutation.
   inputChangedHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    }
-    const updatedNestedKeys = {
-      ...updatedOrderForm[inputIdentifier],
-    }
-
-    updatedNestedKeys.value = event.target.value
-    updatedNestedKeys.valid = this.validateInput(
-      updatedNestedKeys.value,
-      updatedNestedKeys.validation
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: event.target.value,
+        valid: this.validateInput(
+          event.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true,
+      }
     )
-    updatedNestedKeys.touched = true
-    updatedOrderForm[inputIdentifier] = updatedNestedKeys
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    })
 
     let isAllValid = true
     for (let key in updatedOrderForm) {
@@ -145,7 +146,7 @@ class ContactData extends Component {
 
     this.setState({ orderForm: updatedOrderForm, isFormValid: isAllValid })
   }
-  
+
   // conditionally renders <Spinner /> while isLoading otherwise renders all input-elements & 'ORDER' button
   render() {
     const formElementsArray = []
@@ -194,14 +195,15 @@ const mapStateToProps = state => {
     totalPrice: state.burger.totalPrice,
     isLoading: state.orders.isLoading,
     token: state.auth.token,
-    userId: state.auth.userId
+    userId: state.auth.userId,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onToggleLoading: () => dispatch(actions.toggleIsLoading()),
-    onOrderBurger: (order, token) => dispatch(actions.postOrderToDb(order, token)),
+    onOrderBurger: (order, token) =>
+      dispatch(actions.postOrderToDb(order, token)),
   }
 }
 
