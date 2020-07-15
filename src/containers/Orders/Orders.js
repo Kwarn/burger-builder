@@ -9,7 +9,7 @@ import Order from '../../components/Order/Order'
 class Orders extends Component {
   // fetches orders from db
   componentDidMount() {
-    this.props.onFetchOrders(this.props.token)
+    this.props.onFetchOrders(this.props.token, this.props.userId)
   }
 
   // conditionally renders Spinner/orders if fetching ingreedients is successful
@@ -31,13 +31,14 @@ class Orders extends Component {
 const mapStateToProps = state => {
   return {
     orders: state.orders.orders,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.userId
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchOrders: (token) => dispatch(actions.fetchOrders(token)),
+    onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
   }
 }
 
