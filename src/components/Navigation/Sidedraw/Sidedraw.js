@@ -11,8 +11,8 @@ const sideDraw = props => {
   }
   return (
     <>
-    <Backdrop show={props.open} toggle={props.toggle}/>
-      <div className={attachedClasses.join(" ")}>
+    <Backdrop show={props.open} close={props.close}/>
+      <div className={attachedClasses.join(" ")} onClick={props.close}>
         <div className={classes.Logo}>
           <Logo />
         </div>

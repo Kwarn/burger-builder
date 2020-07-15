@@ -9,23 +9,28 @@ class Layout extends Component {
     showSideDraw: false,
   }
 
-  sideDrawHandler = () => {
+  sideDrawerClosedHandler = () => {
+    this.setState({ showSideDraw: false })
+  }
+
+  sideDrawToggleHandler = () => {
     this.setState(prevState => {
       return { showSideDraw: !prevState.showSideDraw }
     })
   }
 
+
   render() {
     return (
       <>
         <Toolbar
-          toggleSideDraw={this.sideDrawHandler}
           isAuth={this.props.isAuth}
+          toggle={this.sideDrawToggleHandler}
         />
         <Sidedraw
-          open={this.state.showSideDraw}
-          toggle={this.sideDrawHandler}
           isAuth={this.props.isAuth}
+          open={this.state.showSideDraw}
+          close={this.sideDrawerClosedHandler}
         />
         <main className={classes.Content}>{this.props.children}</main>
       </>

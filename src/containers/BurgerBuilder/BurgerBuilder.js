@@ -83,7 +83,7 @@ class BurgerBuilder extends Component {
 
     return (
       <>
-        <Modal show={this.state.isModalOpen} toggle={this.orderNowHandler}>
+        <Modal show={this.state.isModalOpen} close={this.orderNowHandler}>
           {orderSummary}
         </Modal>
         {burger}
