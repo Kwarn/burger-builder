@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../../store/actions/index'
 import { updateObject } from '../../../shared/utility'
+import { validateInput } from '../../../shared/validation'
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
@@ -75,6 +76,7 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
+          isEmail: true,
         },
         valid: false,
         touched: false,
@@ -92,16 +94,6 @@ class ContactData extends Component {
         valid: true,
       },
     },
-  }
-
-  // returns false if ANY validation rules for the input-feild fail their check
-  // receives rules from each input-field's 'validation' object - orderForm[...].validation
-  validateInput = (value, rules) => {
-    let isValid = true
-    if (rules.required) isValid = value.trim() !== '' && isValid
-    if (rules.minLength) isValid = value.length >= rules.minLength && isValid
-    if (rules.maxLength) isValid = value.length <= rules.maxLength && isValid
-    return isValid
   }
 
   // creates order object for database. Initiates loading spinner.
@@ -128,7 +120,7 @@ class ContactData extends Component {
       this.state.orderForm[inputIdentifier],
       {
         value: event.target.value,
-        valid: this.validateInput(
+        valid: validateInput(
           event.target.value,
           this.state.orderForm[inputIdentifier].validation
         ),
