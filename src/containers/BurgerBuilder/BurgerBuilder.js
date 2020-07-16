@@ -9,7 +9,7 @@ import Burger from '../../components/Burger/Burger'
 import Modal from '../../components/UI/Modal/Modal'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     isModalOpen: false,
   }
