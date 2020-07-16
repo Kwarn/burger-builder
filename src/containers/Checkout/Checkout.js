@@ -34,7 +34,7 @@ class Checkout extends Component {
         </>
       )
     }
-    return <Redirect to="/" />
+    return summary
   }
 }
 
