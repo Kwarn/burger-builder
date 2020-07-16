@@ -23,7 +23,7 @@ class App extends Component {
         <Route
           path="/login"
           render={() => (
-            <Suspense fallback={Spinner}>
+            <Suspense fallback={<Spinner/>}>
               <Auth />
             </Suspense>
           )}
@@ -40,7 +40,7 @@ class App extends Component {
           <Route
             path="/checkout"
             render={() => (
-              <Suspense fallback={Spinner}>
+              <Suspense fallback={<Spinner/>}>
                 <Checkout />
               </Suspense>
             )}
@@ -48,7 +48,7 @@ class App extends Component {
           <Route
             path="/orders"
             render={() => (
-              <Suspense fallback={Spinner}>
+              <Suspense fallback={<Spinner/>}>
                 <Orders />
               </Suspense>
             )}
