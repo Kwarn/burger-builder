@@ -25,6 +25,7 @@ export const checkAuthTimeout = expirationTime => {
     expirationTime: expirationTime,
   }
 }
+
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
@@ -56,23 +57,7 @@ export const auth = (email, password, isSignUp) => {
 }
 
 export const tryAutoLogin = () => {
-  return dispatch => {
-    const token = localStorage.getItem('token')
-    const userId = localStorage.getItem('userId')
-    if (!token) {
-      dispatch(logout())
-    } else {
-      const expirationDate = new Date(localStorage.getItem('expirationDate'))
-      if (expirationDate <= new Date().getTime()) {
-        dispatch(logout())
-      } else {
-        dispatch(authSuccess(token, userId))
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000
-          )
-        )
-      }
-    }
+  return {
+    type: actionTypes.TRY_AUTO_LOGIN,
   }
 }
