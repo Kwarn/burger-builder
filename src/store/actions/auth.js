@@ -47,7 +47,12 @@ export const authFailed = error => {
 }
 
 export const auth = (email, password, isSignUp) => {
-  
+  return {
+    type: actionTypes.AUTH_USER,
+    email: email,
+    password: password,
+    isSignUp: isSignUp,
+  }
 }
 
 export const tryAutoLogin = () => {
