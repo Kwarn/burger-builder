@@ -5,8 +5,7 @@ export {
   initPurchase,
   resetBurgerBuilder,
 } from './burgerBuilder'
-export { postOrderToDb } from './contactData'
-export { toggleIsLoading, fetchOrders } from './orders'
+export { toggleIsLoading, fetchOrders, postOrderToDb } from './orders'
 export {
   auth,
   logout,
