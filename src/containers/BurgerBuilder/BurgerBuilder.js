@@ -17,7 +17,7 @@ export class BurgerBuilder extends Component {
   // decides whether to fetch ingredients from db, handles resetting on state on empty burger
   componentDidMount() {
     if (!this.props.ingredients) this.props.onInitIngredients()
-    else this.props.onResetBurgerBuilder()
+    if (this.props.isPurchasable) this.props.onResetBurgerBuilder()
   }
 
   // controls toggling of orderSummary modal
@@ -108,7 +108,7 @@ const mapDipatchToProps = dispatch => {
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.initPurchase()),
     onResetBurgerBuilder: () => dispatch(actions.resetBurgerBuilder()),
-    onSetRedirectPathOnLogin: (path) => {
+    onSetRedirectPathOnLogin: path => {
       dispatch(actions.setRedirectPathOnLogin(path))
     },
   }
