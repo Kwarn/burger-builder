@@ -1,29 +1,28 @@
 import * as actionTypes from '../actions/actionTypes'
-import axios from 'axios'
 
-const FIREBASE_API_KEY = 'AIzaSyAzXidjldfe5JtOOzrcoCz4siqPBqEnFsI'
-
-export const setRedirectPathOnLogin = (path) => {
+export const setRedirectPathOnLogin = path => {
   return {
     type: actionTypes.SET_REDIRECT_PATH_ON_LOGIN,
-    path: path
+    path: path,
   }
 }
 
 export const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('userId')
-  localStorage.removeItem('expirationDate')
+  return {
+    type: actionTypes.AUTH_INIT_LOGOUT,
+  }
+}
+
+export const logoutSuccess = () => {
   return {
     type: actionTypes.AUTH_LOGOUT,
   }
 }
 
 export const checkAuthTimeout = expirationTime => {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(logout())
-    }, expirationTime * 1000)
+  return {
+    type: actionTypes.AUTH_CHECK_TIMEOUT,
+    expirationTime: expirationTime,
   }
 }
 export const authStart = () => {
@@ -48,34 +47,7 @@ export const authFailed = error => {
 }
 
 export const auth = (email, password, isSignUp) => {
-  return dispatch => {
-    dispatch(authStart())
-    const authData = {
-      email: email,
-      password: password,
-      returnSecureToken: true,
-    }
-    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`
-    if (!isSignUp) {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`
-    }
-    axios
-      .post(url, authData)
-      .then(res => {
-        const expirationDate = new Date(
-          new Date().getTime() + res.data.expiresIn * 1000
-        )
-        localStorage.setItem('token', res.data.idToken)
-        localStorage.setItem('userId', res.data.localId)
-        localStorage.setItem('expirationDate', expirationDate)
-        dispatch(authSuccess(res.data.idToken, res.data.localId))
-        dispatch(checkAuthTimeout(res.data.expiresIn))
-      })
-      .catch(err => {
-        console.log(err)
-        dispatch(authFailed(err.response.data.error))
-      })
-  }
+  
 }
 
 export const tryAutoLogin = () => {

@@ -3,8 +3,18 @@ export {
   removeIngredient,
   initIngredients,
   initPurchase,
-  resetBurgerBuilder
+  resetBurgerBuilder,
 } from './burgerBuilder'
 export { postOrderToDb } from './contactData'
 export { toggleIsLoading, fetchOrders } from './orders'
-export { auth, logout, setRedirectPathOnLogin, tryAutoLogin } from './auth'
+export {
+  auth,
+  logout,
+  setRedirectPathOnLogin,
+  tryAutoLogin,
+  logoutSuccess,
+  authStart,
+  authSuccess,
+  authFailed,
+  checkAuthTimeout,
+} from './auth'
