@@ -10,13 +10,16 @@ export function* fetchOrdersSaga(action) {
   try {
     const res = yield axios.get('orders.json' + queryParams)
     const orders = []
+    console.log(res.data)
     for (let key in res.data) {
       orders.push({
         id: key,
         ingredients: res.data[key].ingredients,
         totalPrice: res.data[key].price,
+        orderDate: res.data[key].orderDate,
       })
     }
+    orders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))
     yield put(actions.fetchOrdersSuccess(orders))
     yield put(actions.toggleIsLoading())
   } catch (error) {

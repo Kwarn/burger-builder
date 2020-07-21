@@ -108,6 +108,7 @@ class ContactData extends Component {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData,
+      orderDate: new Date(),
     }
     this.props.onToggleLoading()
     this.props.onOrderBurger(order, this.props.token)
@@ -194,8 +195,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onToggleLoading: () => dispatch(actions.toggleIsLoading()),
-    onOrderBurger: (order, token) =>
-      dispatch(actions.postOrder(order, token)),
+    onOrderBurger: (order, token) => dispatch(actions.postOrder(order, token)),
   }
 }
 
