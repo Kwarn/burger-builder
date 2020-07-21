@@ -40,7 +40,7 @@ export const postOrderFailed = error => {
   }
 }
 
-export const postOrderToDb = (order, token) => {
+export const postOrder = (order, token) => {
   return {
     type: actionTypes.POST_ORDER,
     order: order,

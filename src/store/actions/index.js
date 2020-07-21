@@ -10,7 +10,7 @@ export {
 export {
   toggleIsLoading,
   fetchOrders,
-  postOrderToDb,
+  postOrder,
   fetchOrdersFailed,
   fetchOrdersSuccess,
   postOrderSuccess,
