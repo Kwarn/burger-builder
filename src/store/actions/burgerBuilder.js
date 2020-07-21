@@ -1,9 +1,8 @@
-import axios from '../../axios-orders'
 import * as actionTypes from './actionTypes'
 
 export const resetBurgerBuilder = () => {
   return {
-    type: actionTypes.RESET_BURGER_BUILDER
+    type: actionTypes.RESET_BURGER_BUILDER,
   }
 }
 
@@ -35,19 +34,8 @@ export const fetchIngredientsFailed = () => {
 }
 
 export const initIngredients = () => {
-  return dispatch => {
-    axios
-      .get('ingredients.json')
-      .then(res => {
-        if (!res.data) {
-          dispatch(fetchIngredientsFailed())
-        } else {
-          dispatch(setIngredients(res.data))
-        }
-      })
-      .catch(err => {
-        dispatch(fetchIngredientsFailed())
-      })
+  return {
+    type: actionTypes.INIT_INGREDIENTS,
   }
 }
 

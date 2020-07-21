@@ -4,8 +4,18 @@ export {
   initIngredients,
   initPurchase,
   resetBurgerBuilder,
+  fetchIngredientsFailed,
+  setIngredients,
 } from './burgerBuilder'
-export { toggleIsLoading, fetchOrders, postOrderToDb } from './orders'
+export {
+  toggleIsLoading,
+  fetchOrders,
+  postOrderToDb,
+  fetchOrdersFailed,
+  fetchOrdersSuccess,
+  postOrderSuccess,
+  postOrderFailed,
+} from './orders'
 export {
   auth,
   logout,

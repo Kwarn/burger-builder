@@ -1,4 +1,3 @@
-import axios from '../../axios-orders'
 import * as actionTypes from './actionTypes'
 
 export const fetchOrdersSuccess = orders => {
@@ -15,31 +14,10 @@ export const fetchOrdersFailed = () => {
 }
 
 export const fetchOrders = (token, userId) => {
-  return dispatch => {
-    dispatch(toggleIsLoading())
-    const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"'
-    axios
-      .get('orders.json' + queryParams)
-      .then(res => {
-        if (res.data) {
-          const orders = []
-          for (let key in res.data) {
-            orders.push({
-              id: key,
-              ingredients: res.data[key].ingredients,
-              totalPrice: res.data[key].price,
-            })
-          }
-          dispatch(fetchOrdersSuccess(orders))
-        } else {
-          dispatch(fetchOrdersFailed('Error Fetching Orders'))
-        }
-        dispatch(toggleIsLoading())
-      })
-      .catch(err => {
-        dispatch(fetchOrdersFailed(err))
-        dispatch(toggleIsLoading())
-      })
+  return {
+    type: actionTypes.FETCH_ORDERS,
+    token: token,
+    userId: userId,
   }
 }
 
@@ -63,15 +41,9 @@ export const postOrderFailed = error => {
 }
 
 export const postOrderToDb = (order, token) => {
-  return dispatch => {
-    axios
-      .post('/orders.json?auth=' + token, order)
-      .then(res => {
-        if (res.data) dispatch(postOrderSuccess())
-        else dispatch(postOrderFailed('Error Posting Order'))
-      })
-      .catch(err => {
-        dispatch(postOrderFailed(err))
-      })
+  return {
+    type: actionTypes.POST_ORDER,
+    order: order,
+    token: token,
   }
 }
