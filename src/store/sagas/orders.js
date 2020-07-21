@@ -5,12 +5,7 @@ import axios from '../../axios-orders'
 export function* fetchOrdersSaga(action) {
   yield put(actions.toggleIsLoading())
 
-  const queryParams =
-    '?auth=' +
-    action.token +
-    '&orderBy="userId"&equalTo="' +
-    action.userId +
-    '"'
+  const queryParams = `?auth=${action.token}&orderBy="userId"&equalTo="${action.userId}"`
 
   try {
     const res = yield axios.get('orders.json' + queryParams)
