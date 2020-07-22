@@ -1,13 +1,11 @@
-import { put, delay } from 'redux-saga/effects'
+import { put, delay, call } from 'redux-saga/effects'
 import * as actions from '../actions'
 import axios from 'axios'
 
-const FIREBASE_API_KEY = 'AIzaSyAzXidjldfe5JtOOzrcoCz4siqPBqEnFsI'
-
 export function* logoutSaga(action) {
-  yield localStorage.removeItem('token')
-  yield localStorage.removeItem('userId')
-  yield localStorage.removeItem('expirationDate')
+  yield call([localStorage, 'removeItem'], 'token')
+  yield call([localStorage, 'removeItem'], 'userId')
+  yield call([localStorage, 'removeItem'], 'expirationDate')
   yield put(actions.logoutSuccess())
 }
 
@@ -17,6 +15,7 @@ export function* checkAuthTimeoutSaga(action) {
 }
 
 export function* authUserSaga(action) {
+  const FIREBASE_API_KEY = 'AIzaSyAzXidjldfe5JtOOzrcoCz4siqPBqEnFsI'
   yield put(actions.authStart())
   const authData = {
     email: action.email,
@@ -38,8 +37,8 @@ export function* authUserSaga(action) {
     localStorage.setItem('expirationDate', expirationDate)
     yield put(actions.authSuccess(res.data.idToken, res.data.localId))
     yield put(actions.checkAuthTimeout(res.data.expiresIn))
-  } catch (err) {
-    yield put(actions.authFailed(err.response.data.error))
+  } catch (error) {
+    yield put(actions.authFailed(error.response.data.error))
   }
 }
 
