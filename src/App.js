@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from './store/actions/index'
@@ -12,59 +12,58 @@ const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'))
 const Orders = React.lazy(() => import('./containers/Orders/Orders'))
 const Auth = React.lazy(() => import('./containers/Auth/Auth'))
 
-class App extends Component {
-  componentDidMount() {
-    this.props.onTryAutoLogin()
-  }
+const App = props => {
+  const { onTryAutoLogin } = props
+  useEffect(() => {
+    onTryAutoLogin()
+  }, [onTryAutoLogin])
 
-  render() {
-    let routes = (
+  let routes = (
+    <Switch>
+      <Route
+        path="/login"
+        render={() => (
+          <Suspense fallback={<Spinner />}>
+            <Auth />
+          </Suspense>
+        )}
+      />
+      <Route path="/" exact component={BurgerBuilder} />
+      <Redirect to="/" />
+    </Switch>
+  )
+
+  if (props.isAuth) {
+    routes = (
       <Switch>
+        <Route path="/login" component={Auth} />
         <Route
-          path="/login"
+          path="/checkout"
           render={() => (
-            <Suspense fallback={<Spinner/>}>
-              <Auth />
+            <Suspense fallback={<Spinner />}>
+              <Checkout />
             </Suspense>
           )}
         />
+        <Route
+          path="/orders"
+          render={() => (
+            <Suspense fallback={<Spinner />}>
+              <Orders />
+            </Suspense>
+          )}
+        />
+        <Route path="/logout" component={Logout} />
         <Route path="/" exact component={BurgerBuilder} />
         <Redirect to="/" />
       </Switch>
     )
-
-    if (this.props.isAuth) {
-      routes = (
-        <Switch>
-          <Route path="/login" component={Auth} />
-          <Route
-            path="/checkout"
-            render={() => (
-              <Suspense fallback={<Spinner/>}>
-                <Checkout />
-              </Suspense>
-            )}
-          />
-          <Route
-            path="/orders"
-            render={() => (
-              <Suspense fallback={<Spinner/>}>
-                <Orders />
-              </Suspense>
-            )}
-          />
-          <Route path="/logout" component={Logout} />
-          <Route path="/" exact component={BurgerBuilder} />
-          <Redirect to="/" />
-        </Switch>
-      )
-    }
-    return (
-      <div className="App">
-        <Layout>{routes}</Layout>
-      </div>
-    )
   }
+  return (
+    <div className="App">
+      <Layout>{routes}</Layout>
+    </div>
+  )
 }
 
 const mapStateToProps = state => {
