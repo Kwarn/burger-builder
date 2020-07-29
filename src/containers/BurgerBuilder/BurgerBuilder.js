@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import axios from '../../axios-orders'
 import * as actions from '../../store/actions/index'
@@ -9,87 +9,82 @@ import Burger from '../../components/Burger/Burger'
 import Modal from '../../components/UI/Modal/Modal'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-export class BurgerBuilder extends Component {
-  state = {
-    isModalOpen: false,
-  }
+const BurgerBuilder = props => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { ingredients, onInitIngredients } = props
 
-  // decides whether to fetch ingredients from db, handles resetting on state on empty burger
-  componentDidMount() {
-    if (!this.props.ingredients) this.props.onInitIngredients()
-    if (this.props.isPurchasable) this.props.onResetBurgerBuilder()
-  }
+  useEffect(() => {
+    if (!ingredients) onInitIngredients()
+  }, [ingredients, onInitIngredients])
 
   // controls toggling of orderSummary modal
-  orderNowHandler = () => {
-    if (this.props.isAuth) {
-      const currentStatus = this.state.isModalOpen
-      this.setState({ isModalOpen: !currentStatus })
+  const orderNowHandler = () => {
+    if (props.isAuth) {
+      setIsModalOpen(!isModalOpen)
     } else {
-      this.props.onSetRedirectPathOnLogin('/checkout')
-      this.props.history.push('/login')
+      props.onSetRedirectPathOnLogin('/checkout')
+      props.history.push('/login')
     }
   }
 
   // starts "tracking" checkout process. When complete we can redirect the user
   // eventually an async push to db completes and 'state.orders.redirect' will be set to true
-  continuePurchaseHandler = () => {
-    this.props.onInitPurchase()
-    this.props.history.push('/checkout')
+  const continuePurchaseHandler = () => {
+    props.onInitPurchase()
+    props.history.push('/checkout')
   }
 
   // conditionally renders UI Elements - Spinner while waiting for db.get()
   // Error <div> when error - otherwise burger & buildcontrols & orderSummary modal
-  render() {
-    const disabledInfo = {
-      ...this.props.ingredients,
-    }
-    for (let key in disabledInfo) {
-      disabledInfo[key] = disabledInfo[key] === 0
-    }
 
-    let orderSummary = null
+  const disabledInfo = {
+    ...props.ingredients,
+  }
+  for (let key in disabledInfo) {
+    disabledInfo[key] = disabledInfo[key] === 0
+  }
 
-    let burger = this.props.error ? (
-      <p style={{ textAlign: 'center' }}>Error Fetching Ingredients</p>
-    ) : (
-      <Spinner></Spinner>
-    )
+  let orderSummary = null
 
-    if (this.props.ingredients) {
-      burger = (
-        <>
-          <Burger ingredients={this.props.ingredients} />
-          <BuildControls
-            totalPrice={this.props.totalPrice}
-            addIngredient={iName => this.props.onAddIngredient(iName)}
-            removeIngredient={iName => this.props.onRemoveIngredient(iName)}
-            disabled={disabledInfo}
-            purchase={this.props.isPurchasable}
-            ordered={this.orderNowHandler}
-            isAuth={this.props.isAuth}
-          />
-        </>
-      )
-      orderSummary = (
-        <OrderSummary
-          totalPrice={this.props.totalPrice}
-          ingredients={this.props.ingredients}
-          cancelPurchase={this.orderNowHandler}
-          confirmPurchase={this.continuePurchaseHandler}
-        />
-      )
-    }
+  let burger = props.error ? (
+    <p style={{ textAlign: 'center' }}>Error Fetching Ingredients</p>
+  ) : (
+    <Spinner></Spinner>
+  )
 
-    return (
+  if (props.ingredients) {
+    burger = (
       <>
-        <Modal show={this.state.isModalOpen} close={this.orderNowHandler}>
-          {orderSummary}
-        </Modal>
-        {burger}
+        <Burger ingredients={props.ingredients} />
+        <BuildControls
+          totalPrice={props.totalPrice}
+          addIngredient={iName => props.onAddIngredient(iName)}
+          removeIngredient={iName => props.onRemoveIngredient(iName)}
+          disabled={disabledInfo}
+          purchase={props.isPurchasable}
+          ordered={orderNowHandler}
+          isAuth={props.isAuth}
+        />
       </>
     )
+    orderSummary = (
+      <OrderSummary
+        totalPrice={props.totalPrice}
+        ingredients={props.ingredients}
+        cancelPurchase={orderNowHandler}
+        confirmPurchase={continuePurchaseHandler}
+      />
+    )
   }
+
+  return (
+    <>
+      <Modal show={isModalOpen} close={orderNowHandler}>
+        {orderSummary}
+      </Modal>
+      {burger}
+    </>
+  )
 }
 
 const mapStateToProps = state => {
