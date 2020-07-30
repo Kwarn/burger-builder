@@ -1,4 +1,4 @@
-.MenuToggle {
+.DrawToggle {
   width: 40px;
   height: 100%;
   display: flex;
@@ -10,14 +10,14 @@
   cursor: pointer;
 }
 
-.MenuToggle div {
+.DrawToggle div {
   width: 90%;
   height: 3px;
   background-color: white;
 }
 
 @media (min-width: 500px) {
-  .DrawerToggle {
+  .DrawToggle {
       display: none;
   }
 }

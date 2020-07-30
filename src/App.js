@@ -6,7 +6,6 @@ import Layout from './Hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import Spinner from './components/UI/Spinner/Spinner'
 import Logout from './containers/Auth/Logout/Logout'
-import './App.css'
 
 const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'))
 const Orders = React.lazy(() => import('./containers/Orders/Orders'))
